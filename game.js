@@ -1,0 +1,41 @@
+class game {
+    constructor() {
+        this.canvas = null;
+        this.context = null;
+        this.init();
+        this.loop();
+    }
+
+    init() {
+        this.canvas = document.createElement("canvas");
+        this.context = this.canvas.getContext("2d");
+        this.canvas.width = 400;
+        this.canvas.height = 400;
+        document.body.appendChild(this.canvas);
+        this.snake = new snake(this);
+        this.food = new food(this);
+    }
+
+    loop() {
+        this.update();
+        this.draw();
+        setTimeout(() => this.loop(), 100);
+    }
+
+    update() {
+        this.snake.update();
+        if(this.snake.x === this.food.x && this.snake.y === this.food.y) {
+            this.food.update();
+            this.snake.maxCells++;
+            document.getElementById('score').innerHTML = `Score: ${this.snake.maxCells}`;
+        }
+    }
+
+    draw() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.snake.draw();
+        this.food.draw();
+    }
+}
+
+let g = new game();
